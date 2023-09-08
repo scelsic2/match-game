@@ -1,6 +1,8 @@
 const cardSection = document.querySelector('.card-section')
-const card = document.querySelectorAll('.card')
 const cardBack = document.querySelectorAll('.card-back')
+const hOne = document.querySelector('.h1')
+const playAgainDiv = document.querySelector('.play-again-div')
+const playAgain = document.querySelector('.play-again')
 
 const numberArray1 = [1, 2, 3, 4, 5, 6, 7, 8]
 const numberArray2 = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -11,46 +13,80 @@ assignCards()
 let firstPick = null
 let secondPick = null
 
-function flipCard(e) {
-    if(firstPick == null) {
-        const selectedCard = e.target.parentElement.parentElement
-        selectedCard.classList.add('flip')
-        firstPick = e.target.parentElement.children[1].innerText
-        selectedCard.dataset.attribute = 0
+let firstCardId = null
 
-    } else {
-        const selectedCard = e.target.parentElement.parentElement
-        selectedCard.classList.add('flip')
-        secondPick = e.target.parentElement.children[1].innerText
-        
-        if (secondPick == firstPick) {
-            console.log(`It's a match!`)
+function flipCard(e) {
+
+    if(e.target.classList.contains('card-front')) {
+        if(firstPick == null) {
+            const selectedCard = e.target.parentElement.parentElement
+            selectedCard.classList.add('flip')
+            firstPick = e.target.parentElement.children[1].innerText
+            selectedCard.classList.add('first-card')
+            firstCardId = e.target.parentElement.id
+            
         } else {
-            setInterval(function() {
-                selectedCard.classList.remove('flip')
-              }, 2000);
-              
-            for (i = 0; i < card.length; i++) {
-                let dataAttribute = card[i].attributes[1]
-                
-                if (dataAttribute == 0) {
-                    console.log('-----dataAttribute-----')
-                    console.log(dataAttribute)
-                    
-                } else {
-                    setInterval(function() {
-                        selectedCard.classList.remove('flip')
-                        console.log(cardAtIndex)
-                        // card[i].classList.remove('flip')
-                      }, 2000);
-                      card[i].removeAttribute('data-attribute')
+            const selectedCard = e.target.parentElement.parentElement
+            selectedCard.classList.add('flip')
+            secondPick = e.target.parentElement.children[1].innerText
+            let card = document.querySelectorAll('.card');
+            
+            if (secondPick == firstPick) {
+                console.log(`It's a match!`)
+                for (i = 0; i < card.length; i++) {
+                  
+                    if(card[i].children[0].parentElement.classList.contains('first-card')) {
+                        card[i].children[0].parentElement.classList.remove('first-card')
+                        
+                        const cardIFEC = card[i].firstElementChild
+
+                        setTimeout(function(){
+                            cardIFEC.classList.add('match')
+                            selectedCard.firstElementChild.classList.add('match')
+                        }, 500)
+                        setTimeout(function() {
+                            cardIFEC.classList.remove('match')
+                            selectedCard.firstElementChild.classList.remove('match')
+                        }, 1000)
+                    } 
+                }
+    
+            } else {       
+                for (i = 0; i < card.length; i++) {
+                    if (card[i].children[0].parentElement.classList.contains('first-card')) {
+                        card[i].children[0].parentElement.classList.remove('first-card') 
+                        setTimeout(function() {
+                            selectedCard.classList.remove('flip')
+                            card[i].classList.remove('flip')
+                        }, 1000); 
+                        break;
+                    }
                 }
             }
-              firstPick = null
-              secondPick = null
+            firstPick = null
+            secondPick = null
+            firstCardId = null
+
+            const allFlipped = document.querySelectorAll('.flip')
+            if (allFlipped.length === 16) {
+                setTimeout (function(){
+                    hOne.innerText = "You win!"
+                    const playAgain = document.createElement('div')
+                    playAgain.classList.add('play-again')
+                    playAgain.innerText = "Play Again"
+                    playAgainDiv.appendChild(playAgain)
+                }, 1000)
+                console.log('You win!')
+            }
         }
+        return firstPick, secondPick, firstCardId
+    } else {
+        console.log('You did not select a card.')
     }
-    return firstPick, secondPick
+}
+
+function playAgain() {
+
 }
 
 function assignCards() {
@@ -89,3 +125,4 @@ function shuffle(arr) {
 
 
 cardSection.addEventListener('click', flipCard)
+// playAgain.addEventListener('click' playAgain)
