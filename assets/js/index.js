@@ -1,12 +1,13 @@
 const cardSection = document.querySelector('.card-section')
+const card = document.querySelectorAll('.card');
 const cardBack = document.querySelectorAll('.card-back')
 const hOne = document.querySelector('.h1')
 const playAgainDiv = document.querySelector('.play-again-div')
 const playAgain = document.querySelector('.play-again')
 
-const numberArray1 = [1, 2, 3, 4, 5, 6, 7, 8]
-const numberArray2 = [1, 2, 3, 4, 5, 6, 7, 8]
-const cardArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+let numberArray1 = [1, 2, 3, 4, 5, 6, 7, 8]
+let numberArray2 = [1, 2, 3, 4, 5, 6, 7, 8]
+let cardArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 assignCards()
 
@@ -29,7 +30,6 @@ function flipCard(e) {
             const selectedCard = e.target.parentElement.parentElement
             selectedCard.classList.add('flip')
             secondPick = e.target.parentElement.children[1].innerText
-            let card = document.querySelectorAll('.card');
             
             if (secondPick == firstPick) {
                 console.log(`It's a match!`)
@@ -67,14 +67,11 @@ function flipCard(e) {
             secondPick = null
             firstCardId = null
 
-            const allFlipped = document.querySelectorAll('.flip')
+            allFlipped = document.querySelectorAll('.flip')
             if (allFlipped.length === 16) {
                 setTimeout (function(){
                     hOne.innerText = "You win!"
-                    const playAgain = document.createElement('div')
-                    playAgain.classList.add('play-again')
-                    playAgain.innerText = "Play Again"
-                    playAgainDiv.appendChild(playAgain)
+                    playAgainDiv.classList.remove('hide-me')
                 }, 1000)
                 console.log('You win!')
             }
@@ -85,8 +82,19 @@ function flipCard(e) {
     }
 }
 
-function playAgain() {
-
+function playGameAgain() {
+    let allFlipped = document.querySelectorAll('.flip')
+    for (i = 0; i < card.length; i++) {
+        if (allFlipped.length === 16) {
+            const singleCard = card[i] 
+            singleCard.classList.remove('flip')
+        }
+    }
+    hOne.innerText = 'Match the Cards!'
+    playAgainDiv.classList.add('hide-me')
+    cardArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    assignCards()
+    shuffle(cardArray)
 }
 
 function assignCards() {
@@ -106,12 +114,15 @@ function assignCards() {
         }
     }
 
+    numberArray1 = [1, 2, 3, 4, 5, 6, 7, 8]
+    numberArray2 = [1, 2, 3, 4, 5, 6, 7, 8]
+
 }
 
 function shuffle(arr) {
     let currentIndex = arr.length, randomIndex
     // While there remain elements to shuffle.
-  while (currentIndex != 0) {
+    while (currentIndex != 0) {
     // Pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
@@ -125,4 +136,4 @@ function shuffle(arr) {
 
 
 cardSection.addEventListener('click', flipCard)
-// playAgain.addEventListener('click' playAgain)
+playAgainDiv.addEventListener('click', playGameAgain)

@@ -43,6 +43,7 @@ h1 {
     position: relative;
     transform-style: preserve-3d;
     transition: transform 1s;
+    box-shadow: inset -5px -5px var(--lightest);
 }
 
 .flip-card {
@@ -96,15 +97,29 @@ h1 {
 
 .play-again-div {
     margin-top: 10px;
-}
-
-.play-again {
+    width: fit-content;
+    margin: auto;
     background-color: var(--lightest);
     padding: 10px;
     border-radius: 5px;
     color: var(--darker);
 }
 
-.play-again:hover {
+.play-again-div:hover {
     cursor: pointer;
+}
+
+.hide-me {
+    display: none;
+}
+
+@media only screen and (max-width: 450px) {
+    .card {
+        width: 40px;
+        height: 40px;
+    }
+
+    .card-back {
+        font-size: 50px;
+    }
 }
