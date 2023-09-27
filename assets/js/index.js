@@ -72,7 +72,7 @@ function flipCard(e) {
                 setTimeout (function(){
                     hOne.innerText = "You win!"
                     playAgainDiv.classList.remove('hide-me')
-                }, 1000)
+                }, 1500)
                 console.log('You win!')
             }
         }
@@ -93,8 +93,11 @@ function playGameAgain() {
     hOne.innerText = 'Match the Cards!'
     playAgainDiv.classList.add('hide-me')
     cardArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-    assignCards()
-    shuffle(cardArray)
+    setTimeout(function(){
+        assignCards()
+        shuffle(cardArray)
+    }, 2000)
+    
 }
 
 function assignCards() {
